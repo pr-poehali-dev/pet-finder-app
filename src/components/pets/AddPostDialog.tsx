@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import Icon from "@/components/ui/icon";
 import { Post, PostType, DOG_BREEDS, CAT_BREEDS, ALL_BREEDS, TYPE_CONFIG } from "@/types/pets";
+import PhotoUploader from "./PhotoUploader";
 
 interface AddPostDialogProps {
   onAdd: (post: Post) => void;
@@ -23,20 +24,23 @@ export default function AddPostDialog({ onAdd }: AddPostDialogProps) {
     description: "",
     contact: "",
   });
+  const [photos, setPhotos] = useState<string[]>([]);
 
   const breedOptions = newPost.animal === "Собака" ? DOG_BREEDS : newPost.animal === "Кошка" ? CAT_BREEDS : ALL_BREEDS;
 
   function handleAdd() {
+    const FALLBACK = "https://cdn.poehali.dev/projects/72e8f24a-5c0c-4161-add4-704b787e2131/files/40471b2f-a49f-498f-b018-cb07777cadec.jpg";
     const post: Post = {
       id: Date.now(),
       ...newPost,
       date: new Date().toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" }),
-      image: "https://cdn.poehali.dev/projects/72e8f24a-5c0c-4161-add4-704b787e2131/files/40471b2f-a49f-498f-b018-cb07777cadec.jpg",
+      image: photos[0] || FALLBACK,
       lat: 55.75,
       lng: 37.61,
     };
     onAdd(post);
     setOpen(false);
+    setPhotos([]);
     setNewPost({ type: "lost", animal: "Собака", breed: "", name: "", location: "", description: "", contact: "" });
   }
 
@@ -110,6 +114,10 @@ export default function AddPostDialog({ onAdd }: AddPostDialogProps) {
           <div>
             <Label className="text-sm font-semibold mb-1.5 block">Контакт</Label>
             <Input placeholder="+7 (___) ___-__-__" value={newPost.contact} onChange={(e) => setNewPost({ ...newPost, contact: e.target.value })} className="rounded-xl" />
+          </div>
+          <div>
+            <Label className="text-sm font-semibold mb-1.5 block">Фото</Label>
+            <PhotoUploader photos={photos} onChange={setPhotos} maxPhotos={5} />
           </div>
           <Button onClick={handleAdd} className="w-full gradient-primary text-white rounded-xl font-semibold py-5">
             Опубликовать объявление

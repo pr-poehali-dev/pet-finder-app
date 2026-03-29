@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import Icon from "@/components/ui/icon";
 import { t, setLang, getLang, type Lang } from "@/lib/i18n";
 import AuthPage from "./AuthPage";
+import PhotoUploader from "@/components/pets/PhotoUploader";
 
 interface Props {
   onNavigate?: (tab: string) => void;
@@ -18,6 +19,7 @@ export default function ProfilePage({ onNavigate }: Props) {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(user?.name || "");
   const [phone, setPhone] = useState(user?.phone || "");
+  const [avatarPhotos, setAvatarPhotos] = useState<string[]>(user?.avatar_url ? [user.avatar_url] : []);
   const [saving, setSaving] = useState(false);
   const [lang, setCurrentLang] = useState<Lang>(getLang());
 
@@ -38,7 +40,7 @@ export default function ProfilePage({ onNavigate }: Props) {
   async function handleSave() {
     setSaving(true);
     try {
-      await updateUser({ name, phone });
+      await updateUser({ name, phone, avatar_url: avatarPhotos[0] || user?.avatar_url || "" });
       setEditing(false);
       toast.success("Профиль обновлён");
     } catch (err: unknown) {
@@ -63,9 +65,13 @@ export default function ProfilePage({ onNavigate }: Props) {
     <div className="p-4 space-y-5 pb-24">
       {/* Avatar + name */}
       <div className="flex items-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-2xl font-bold text-primary shrink-0">
-          {user.name?.[0]?.toUpperCase() || "?"}
-        </div>
+        {user.avatar_url ? (
+          <img src={user.avatar_url} className="w-16 h-16 rounded-full object-cover shrink-0 border" alt="" />
+        ) : (
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-2xl font-bold text-primary shrink-0">
+            {user.name?.[0]?.toUpperCase() || "?"}
+          </div>
+        )}
         <div>
           <p className="font-bold text-lg">{user.name}</p>
           <p className="text-sm text-muted-foreground">{user.email}</p>
@@ -83,6 +89,10 @@ export default function ProfilePage({ onNavigate }: Props) {
           <div className="space-y-1">
             <Label>{t("auth.phone")}</Label>
             <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+7..." />
+          </div>
+          <div className="space-y-1">
+            <Label>Фото профиля</Label>
+            <PhotoUploader photos={avatarPhotos} onChange={setAvatarPhotos} maxPhotos={1} />
           </div>
           <div className="flex gap-2">
             <Button className="flex-1" onClick={handleSave} disabled={saving}>

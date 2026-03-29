@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import Icon from "@/components/ui/icon";
 import { t } from "@/lib/i18n";
+import PhotoUploader from "@/components/pets/PhotoUploader";
 
 interface Shelter {
   id: number;
@@ -37,6 +38,7 @@ export default function ShelterPage({ onBack }: Props) {
   const [form, setForm] = useState({
     name: "", description: "", address: "", city: "", phone: "", email: "", website: ""
   });
+  const [logoPhotos, setLogoPhotos] = useState<string[]>([]);
 
   useEffect(() => {
     api
@@ -65,7 +67,7 @@ export default function ShelterPage({ onBack }: Props) {
     e.preventDefault();
     setSaving(true);
     try {
-      const d = (await api.createShelter(form)) as Shelter;
+      const d = (await api.createShelter({ ...form, logo_url: logoPhotos[0] || "" })) as Shelter;
       setShelter(d);
       setEditing(false);
       toast.success("Профиль приюта создан!");
@@ -81,7 +83,7 @@ export default function ShelterPage({ onBack }: Props) {
     if (!shelter) return;
     setSaving(true);
     try {
-      const d = (await api.updateShelter(shelter.id, form)) as Shelter;
+      const d = (await api.updateShelter(shelter.id, { ...form, ...(logoPhotos[0] ? { logo_url: logoPhotos[0] } : {}) })) as Shelter;
       setShelter(d);
       setEditing(false);
       toast.success("Профиль обновлён");
@@ -134,6 +136,10 @@ export default function ShelterPage({ onBack }: Props) {
           onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
           rows={3}
         />
+      </div>
+      <div className="space-y-1">
+        <Label>Логотип / фото приюта</Label>
+        <PhotoUploader photos={logoPhotos} onChange={setLogoPhotos} maxPhotos={1} />
       </div>
       <div className="flex gap-2">
         <Button type="submit" className="flex-1" disabled={saving}>

@@ -91,6 +91,23 @@ export const api = {
     request("animals", "/", { method: "POST", body: JSON.stringify(body) }),
   updateAnimal: (id: number, body: object) =>
     request("animals", `/${id}`, { method: "PUT", body: JSON.stringify(body) }),
+  uploadPhoto: async (file: File): Promise<string> => {
+    const b64 = await fileToBase64(file);
+    const url = new URL(URLS.animals);
+    url.searchParams.set("action", "upload");
+    const token = getToken();
+    const res = await fetch(url.toString(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { "X-Auth-Token": token } : {}),
+      },
+      body: JSON.stringify({ file: b64, content_type: file.type }),
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d?.error || `HTTP ${res.status}`);
+    return d.url as string;
+  },
 
   // Social - Favorites
   getFavorites: () => socialGet("favorites"),
@@ -199,4 +216,17 @@ function socialDelete(section: string) {
 
 function socialPostEmpty(section: string) {
   return socialPost(section, {});
+}
+
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      // strip "data:image/...;base64," prefix
+      resolve(result.split(",")[1]);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }

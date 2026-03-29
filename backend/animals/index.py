@@ -1,10 +1,13 @@
 import json
 import os
 import math
+import base64
+import uuid
 from datetime import datetime
 
 import psycopg2
 import psycopg2.extras
+import boto3
 
 SCHEMA = os.environ.get("MAIN_DB_SCHEMA", "t_p27869002_pet_finder_app")
 CORS = {
@@ -70,12 +73,56 @@ def handler(event: dict, context) -> dict:
         path = f"/{params['id']}"
     elif action_param == "my":
         path = "/my"
+    elif action_param == "upload":
+        path = "/upload"
+
     body = {}
-    if event.get("body"):
+    raw_body = event.get("body") or ""
+    if raw_body:
         try:
-            body = json.loads(event["body"])
+            body = json.loads(raw_body)
         except Exception:
             return err("Invalid JSON body")
+
+    # --- POST /upload — загрузка фото ---
+    if path == "/upload" and method == "POST":
+        token = (event.get("headers") or {}).get("x-auth-token") or \
+                (event.get("headers") or {}).get("X-Auth-Token")
+        conn = get_conn()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        user = get_user_from_token(cur, token)
+        conn.close()
+        if not user:
+            return err("Требуется авторизация", 401)
+
+        file_b64 = body.get("file")
+        content_type = body.get("content_type", "image/jpeg")
+        if not file_b64:
+            return err("Поле file обязательно")
+
+        try:
+            file_bytes = base64.b64decode(file_b64)
+        except Exception:
+            return err("Некорректный base64")
+
+        ext = "jpg"
+        if "png" in content_type:
+            ext = "png"
+        elif "webp" in content_type:
+            ext = "webp"
+        elif "gif" in content_type:
+            ext = "gif"
+
+        key = f"animals/{uuid.uuid4().hex}.{ext}"
+        s3 = boto3.client(
+            "s3",
+            endpoint_url="https://bucket.poehali.dev",
+            aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
+            aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
+        )
+        s3.put_object(Bucket="files", Key=key, Body=file_bytes, ContentType=content_type)
+        cdn_url = f"https://cdn.poehali.dev/projects/{os.environ['AWS_ACCESS_KEY_ID']}/bucket/{key}"
+        return ok({"url": cdn_url})
 
     token = (event.get("headers") or {}).get("x-auth-token") or \
             (event.get("headers") or {}).get("X-Auth-Token")
