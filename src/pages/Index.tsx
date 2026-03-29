@@ -30,7 +30,7 @@ const DOG_BREEDS = ["Любая порода", "Двортерьер", "Лабр
 const CAT_BREEDS = ["Любая порода", "Беспородный", "Британская", "Персидская", "Сиамская", "Мейн-кун", "Бенгальская", "Шотландская вислоухая", "Сфинкс", "Русская голубая", "Абиссинская"];
 const ALL_BREEDS = ["Любая порода", ...DOG_BREEDS.slice(1), ...CAT_BREEDS.slice(1)];
 
-const INITIAL_POSTS: Post[] = [
+const ALL_POSTS: Post[] = [
   {
     id: 1,
     type: "lost",
@@ -143,6 +143,104 @@ const INITIAL_POSTS: Post[] = [
     lat: 69.334,
     lng: 88.189,
   },
+  {
+    id: 9,
+    type: "lost",
+    animal: "Кошка",
+    breed: "Абиссинская",
+    name: "Нефертити",
+    location: "Москва, Хамовники",
+    date: "29 марта 2026",
+    description: "Пропала абиссинская кошка дикого окраса. Тонкая, большие уши, янтарные глаза. Очень активная, любит высоту. Убежала через открытое окно.",
+    image: "https://cdn.poehali.dev/projects/72e8f24a-5c0c-4161-add4-704b787e2131/files/b6401465-6b3d-4bd2-8ab2-ce69a81ec389.jpg",
+    contact: "+7 (916) 555-44-33",
+    lat: 55.730,
+    lng: 37.580,
+  },
+  {
+    id: 10,
+    type: "found",
+    animal: "Собака",
+    breed: "Шпиц",
+    name: "Неизвестно",
+    location: "Санкт-Петербург, Петроградская",
+    date: "28 марта 2026",
+    description: "Найден белоснежный шпиц, очень ухоженный, с голубым бантиком. Нашли у Петропавловской крепости. Очень тревожный, соскучился по хозяевам.",
+    image: "https://cdn.poehali.dev/projects/72e8f24a-5c0c-4161-add4-704b787e2131/files/40471b2f-a49f-498f-b018-cb07777cadec.jpg",
+    contact: "+7 (921) 777-88-99",
+    lat: 59.950,
+    lng: 30.316,
+  },
+  {
+    id: 11,
+    type: "lost",
+    animal: "Собака",
+    breed: "Немецкая овчарка",
+    name: "Рекс",
+    location: "Красноярский край, Красноярск, Октябрьский район",
+    date: "27 марта 2026",
+    description: "Пропал кобель немецкой овчарки, 3 года, окрас чёрно-подпалый. Отзывается на Рекс. Ошейник коричневый кожаный. Убежал во время пробежки в лесопарке.",
+    image: "https://cdn.poehali.dev/projects/72e8f24a-5c0c-4161-add4-704b787e2131/files/40471b2f-a49f-498f-b018-cb07777cadec.jpg",
+    contact: "+7 (391) 456-78-90",
+    lat: 56.033,
+    lng: 92.845,
+  },
+  {
+    id: 12,
+    type: "search",
+    animal: "Кошка",
+    breed: "Персидская",
+    name: "Любая",
+    location: "Москва, Измайлово",
+    date: "25 марта 2026",
+    description: "Ищу персидского котёнка или молодую кошку до 2 лет. Предпочтительно белый или кремовый окрас. Есть всё необходимое, большая квартира, нет других животных.",
+    image: "https://cdn.poehali.dev/projects/72e8f24a-5c0c-4161-add4-704b787e2131/files/b6401465-6b3d-4bd2-8ab2-ce69a81ec389.jpg",
+    contact: "+7 (926) 333-22-11",
+    lat: 55.790,
+    lng: 37.810,
+  },
+  {
+    id: 13,
+    type: "found",
+    animal: "Собака",
+    breed: "Корги",
+    name: "Неизвестно",
+    location: "Екатеринбург, Уралмаш",
+    date: "29 марта 2026",
+    description: "Нашли рыжего корги, очень игривый и ухоженный. Явно домашний — знает команды «сидеть» и «дай лапу». Без чипа, ждём хозяев.",
+    image: "https://cdn.poehali.dev/projects/72e8f24a-5c0c-4161-add4-704b787e2131/files/40471b2f-a49f-498f-b018-cb07777cadec.jpg",
+    contact: "+7 (343) 666-55-44",
+    lat: 56.877,
+    lng: 60.632,
+  },
+  {
+    id: 14,
+    type: "lost",
+    animal: "Кошка",
+    breed: "Сиамская",
+    name: "Клеопатра",
+    location: "Красноярский край, Ачинск",
+    date: "26 марта 2026",
+    description: "Пропала сиамская кошка, голубоглазая, темные лапки и мордочка. Очень разговорчивая, постоянно мяукает. Убежала через балкон.",
+    image: "https://cdn.poehali.dev/projects/72e8f24a-5c0c-4161-add4-704b787e2131/files/b6401465-6b3d-4bd2-8ab2-ce69a81ec389.jpg",
+    contact: "+7 (39151) 2-34-56",
+    lat: 56.269,
+    lng: 90.501,
+  },
+  {
+    id: 15,
+    type: "found",
+    animal: "Собака",
+    breed: "Такса",
+    name: "Неизвестно",
+    location: "Казань, Ново-Савиновский район",
+    date: "29 марта 2026",
+    description: "Найдена короткошёрстная такса, рыжий окрас, очень дружелюбная. Около торгового центра Мега. Без ошейника, но упитанная и явно домашняя.",
+    image: "https://cdn.poehali.dev/projects/72e8f24a-5c0c-4161-add4-704b787e2131/files/40471b2f-a49f-498f-b018-cb07777cadec.jpg",
+    contact: "+7 (843) 999-00-11",
+    lat: 55.826,
+    lng: 49.123,
+  },
 ];
 
 const TYPE_CONFIG = {
@@ -160,7 +258,7 @@ const NAV_ITEMS = [
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState("feed");
-  const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS);
+  const [posts, setPosts] = useState<Post[]>(ALL_POSTS);
   const [filterType, setFilterType] = useState<PostType | "all">("all");
   const [filterAnimal, setFilterAnimal] = useState("all");
   const [filterBreed, setFilterBreed] = useState("Любая порода");
@@ -169,6 +267,8 @@ export default function Index() {
   const [selectedCity, setSelectedCity] = useState("Москва");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [feedKey, setFeedKey] = useState(0);
 
   const [newPost, setNewPost] = useState({
     type: "lost" as PostType,
@@ -181,6 +281,15 @@ export default function Index() {
   });
 
   const breedOptions = newPost.animal === "Собака" ? DOG_BREEDS : newPost.animal === "Кошка" ? CAT_BREEDS : ALL_BREEDS;
+
+  function handleRefresh() {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setPosts([...ALL_POSTS].sort(() => Math.random() - 0.5));
+      setFeedKey(k => k + 1);
+      setIsRefreshing(false);
+    }, 900);
+  }
 
   const filteredPosts = posts.filter((p) => {
     if (filterType !== "all" && p.type !== filterType) return false;
@@ -444,19 +553,33 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Results count */}
-            <p className="text-sm text-muted-foreground px-1">
-              Найдено: <span className="font-semibold text-foreground">{filteredPosts.length}</span> объявлений
-              {filterBreed !== "Любая порода" && (
-                <span className="ml-2 inline-flex items-center gap-1 bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full font-semibold">
-                  {filterBreed}
-                  <button onClick={() => setFilterBreed("Любая порода")} className="ml-0.5 hover:text-red-500">×</button>
-                </span>
-              )}
-            </p>
+            {/* Results count + refresh */}
+            <div className="flex items-center justify-between px-1">
+              <p className="text-sm text-muted-foreground">
+                Найдено: <span className="font-semibold text-foreground">{filteredPosts.length}</span> объявлений
+                {filterBreed !== "Любая порода" && (
+                  <span className="ml-2 inline-flex items-center gap-1 bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full font-semibold">
+                    {filterBreed}
+                    <button onClick={() => setFilterBreed("Любая порода")} className="ml-0.5 hover:text-red-500">×</button>
+                  </span>
+                )}
+              </p>
+              <button
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                className="flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1.5 rounded-full transition-all disabled:opacity-60"
+              >
+                <Icon
+                  name="RefreshCw"
+                  size={13}
+                  className={isRefreshing ? "animate-spin" : ""}
+                />
+                {isRefreshing ? "Обновляю..." : "Обновить"}
+              </button>
+            </div>
 
             {/* Posts */}
-            <div className="space-y-4">
+            <div key={feedKey} className="space-y-4">
               {filteredPosts.length === 0 && (
                 <div className="text-center py-16 text-muted-foreground">
                   <div className="text-5xl mb-3">🔍</div>
