@@ -8,18 +8,24 @@ import { Post, TYPE_CONFIG } from "@/types/pets";
 interface PostCardProps {
   post: Post;
   index: number;
+  onClick?: () => void;
 }
 
-export default function PostCard({ post, index }: PostCardProps) {
+export default function PostCard({ post, index, onClick }: PostCardProps) {
   const [open, setOpen] = useState(false);
   const cfg = TYPE_CONFIG[post.type];
+
+  function handleClick() {
+    if (onClick) onClick();
+    else setOpen(true);
+  }
 
   return (
     <>
       <div
         className="bg-white rounded-2xl overflow-hidden shadow-sm border border-border/50 card-hover cursor-pointer"
         style={{ animationDelay: `${index * 60}ms` }}
-        onClick={() => setOpen(true)}
+        onClick={handleClick}
       >
         <div className="relative">
           <img src={post.image} alt={post.name} className="w-full h-44 object-cover" />

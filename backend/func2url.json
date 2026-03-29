@@ -1,0 +1,7 @@
+{
+  "auth": "https://functions.poehali.dev/172e63a0-0783-498c-8022-b0be67ee56e7",
+  "social": "https://functions.poehali.dev/acfca719-77f8-4293-b0aa-8ca362af7acd",
+  "animals": "https://functions.poehali.dev/9c19e985-acd8-4e0f-b1a7-235ad29c15ed",
+  "shelters": "https://functions.poehali.dev/7d2a2940-1faf-4a59-acfb-3a77e73ad9e4",
+  "admin": "https://functions.poehali.dev/1ed62c74-bd07-46da-98e2-46eb9703eefa"
+}

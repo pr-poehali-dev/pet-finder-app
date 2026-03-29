@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "Register new user",
+      "method": "POST",
+      "path": "/?action=register",
+      "body": {"email": "test_reg_xyz@example.com", "password": "test123", "name": "Тест", "role": "user"},
+      "expectedStatus": 201,
+      "expectedBody": {"token": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Forgot password unknown email",
+      "method": "POST",
+      "path": "/?action=forgot-password",
+      "body": {"email": "nobody_xyz@example.com"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

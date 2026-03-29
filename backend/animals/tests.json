@@ -1,0 +1,28 @@
+{
+  "tests": [
+    {
+      "name": "List animals",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"items": [], "total": 0},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "List with filters",
+      "method": "GET",
+      "path": "/?animal_type=dog&post_type=adopt&status=active",
+      "expectedStatus": 200,
+      "expectedBody": {"items": []},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Get nonexistent animal",
+      "method": "GET",
+      "path": "/?action=get&id=99999999",
+      "expectedStatus": 404,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
