@@ -269,6 +269,7 @@ export default function Index() {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [feedKey, setFeedKey] = useState(0);
+  const [filterCity, setFilterCity] = useState("all");
 
   const [newPost, setNewPost] = useState({
     type: "lost" as PostType,
@@ -296,11 +297,23 @@ export default function Index() {
     if (activeTab === "lost" && p.type !== "lost") return false;
     if (filterAnimal !== "all" && p.animal !== filterAnimal) return false;
     if (filterBreed !== "Любая порода" && p.breed !== filterBreed) return false;
+    if (filterCity !== "all" && !p.location.toLowerCase().includes(filterCity.toLowerCase())) return false;
     if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
         !p.location.toLowerCase().includes(searchQuery.toLowerCase()) &&
         !p.breed.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
   });
+
+  const CITY_OPTIONS = [
+    { val: "all", label: "Все города" },
+    { val: "Москва", label: "Москва" },
+    { val: "Санкт-Петербург", label: "Санкт-Петербург" },
+    { val: "Красноярск", label: "Красноярск" },
+    { val: "Красноярский край", label: "Красноярский край" },
+    { val: "Екатеринбург", label: "Екатеринбург" },
+    { val: "Казань", label: "Казань" },
+    { val: "Новосибирск", label: "Новосибирск" },
+  ];
 
   function handleAddPost() {
     const post: Post = {
@@ -551,6 +564,23 @@ export default function Index() {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* City filter */}
+              <div>
+                <Select value={filterCity} onValueChange={setFilterCity}>
+                  <SelectTrigger className="rounded-xl h-9 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Icon name="MapPin" size={14} className="text-muted-foreground" />
+                      <SelectValue placeholder="Все города" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CITY_OPTIONS.map((c) => (
+                      <SelectItem key={c.val} value={c.val}>{c.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Results count + refresh */}
@@ -561,6 +591,13 @@ export default function Index() {
                   <span className="ml-2 inline-flex items-center gap-1 bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full font-semibold">
                     {filterBreed}
                     <button onClick={() => setFilterBreed("Любая порода")} className="ml-0.5 hover:text-red-500">×</button>
+                  </span>
+                )}
+                {filterCity !== "all" && (
+                  <span className="ml-2 inline-flex items-center gap-1 bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full font-semibold">
+                    <Icon name="MapPin" size={10} />
+                    {CITY_OPTIONS.find(c => c.val === filterCity)?.label}
+                    <button onClick={() => setFilterCity("all")} className="ml-0.5 hover:text-red-500">×</button>
                   </span>
                 )}
               </p>
